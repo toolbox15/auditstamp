@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuditStamp | Westside Digital Integrity</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; background: #f4f4f4; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #d32f2f; } /* Chicago Red */
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #d32f2f; color: white; border: none; font-weight: bold; cursor: pointer; }
+        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>AuditStamp</h1>
+        <p><strong>BIPA-Compliant & Grant-Ready.</strong> Built by a Westside Trade Veteran.</p>
+        <hr>
+        <p>Enter your Program Name to generate your Audit-Proof QR code:</p>
+        <input type="text" id="progName" placeholder="e.g. Austin Peace Basketball">
+        <button onclick="generateQR()">Generate My Audit-Proof QR</button>
+        
+        <div id="qrcode"></div>
+        <p style="font-size: 0.8em; text-align: center; color: #666;">Scan this to test your GPS & Consent Handshake.</p>
+    </div>
+
+    <script>
+        function generateQR() {
+            var name = document.getElementById("progName").value;
+            var qrDiv = document.getElementById("qrcode");
+            qrDiv.innerHTML = ""; // Clear old QR
+            
+            if(name) {
+                // This URL will eventually point to your n8n webhook
+                var url = "https://auditstamp.org/checkin?program=" + encodeURIComponent(name);
+                new QRCode(qrDiv, {
+                    text: url,
+                    width: 200,
+                    height: 200
+                });
+                
+                // Optional: Ping your n8n to log that a QR was created
+                console.log("QR Created for: " + name);
+            } else {
+                alert("Please enter a program name.");
+            }
+        }
+    </script>
+</body>
+</html>
